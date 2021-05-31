@@ -66,7 +66,7 @@ program main
   mysize = size/np
   istart = 1 + iam*mysize
   iend   = mysize*(iam + 1)
-!  write(6,*) "iam:",iam,"istart:",istart,"iend:",iend,"mydev:",mydev
+!  write(6,*) "iam:",iam,"istart:",istart,"iend:",iend
 #endif
   if (iam .eq. 0) then
      ! tag argument should be thread number!
