@@ -15,7 +15,6 @@ program main
   real(8) :: t0, time
   character(len=32) :: argv1
   integer :: size
-  integer :: tag1, tag2
 
   ireq = mpi_thread_multiple
   call mpi_init_thread(ireq,iprov,ierr)
@@ -52,7 +51,7 @@ program main
 
   call mpi_barrier(mpi_comm_world, ierr)
   t0 = mpi_wtime()
-  !$omp parallel default(shared) private(iam_th,iam_g,mysize,istart,iend,tag1,tag2,ierr)
+  !$omp parallel default(shared) private(iam_th,iam_g,mysize,istart,iend,ierr)
 #ifdef _OPENMP
   iam_th = omp_get_thread_num()
   nth    = omp_get_num_threads()
@@ -60,11 +59,8 @@ program main
   mysize = size/nth
   istart = 1 + iam_th*mysize
   iend   = mysize*(iam_th + 1)
-  tag1   = 100*iam + iam_th
-  tag2   = 100*recvfrom + iam_th
 #ifdef _DEBUG
-  write(6,'(8(a,i4))') "iam_g: ", iam_g, " iam: ", iam, " iam_th: ",iam_th," istart: ",istart," iend: ",iend," mysize: ",mysize, &
-       " tag1: ",tag1," tag2: ",tag2
+  write(6,'(6(a,i4))') "iam_g: ", iam_g, " iam: ", iam, " iam_th: ",iam_th," istart: ",istart," iend: ",iend," mysize: ",mysize
 #endif
 #else
   mysize = size/np
@@ -73,11 +69,12 @@ program main
 !  write(6,*) "iam:",iam,"istart:",istart,"iend:",iend,"mydev:",mydev
 #endif
   if (iam .eq. 0) then
-     call mpi_send(sbuf(istart), mysize, mpi_real8, sendto,   tag1, mpi_comm_world, ierr)
-     call mpi_recv(rbuf(istart), mysize, mpi_real8, recvfrom, tag2, mpi_comm_world, stat, ierr)
+     ! tag argument should be thread number!
+     call mpi_send(sbuf(istart), mysize, mpi_real8, sendto,   iam_th, mpi_comm_world, ierr)
+     call mpi_recv(rbuf(istart), mysize, mpi_real8, recvfrom, iam_th, mpi_comm_world, stat, ierr)
   else
-     call mpi_recv(rbuf(istart), mysize, mpi_real8, recvfrom, tag2, mpi_comm_world, stat, ierr)
-     call mpi_send(sbuf(istart), mysize, mpi_real8, sendto,   tag1, mpi_comm_world, ierr)
+     call mpi_recv(rbuf(istart), mysize, mpi_real8, recvfrom, iam_th, mpi_comm_world, stat, ierr)
+     call mpi_send(sbuf(istart), mysize, mpi_real8, sendto,   iam_th, mpi_comm_world, ierr)
   end if
   !$omp end parallel
   call mpi_barrier(mpi_comm_world, ierr)
