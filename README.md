@@ -21,3 +21,5 @@ $ mpirun -H localhost:16,r7i4n3:16 -npernode 4 -np 8 -x OMP_NUM_THREADS=4 -x PAT
  size:     1048576
  time[s]:   1.7100239929277450E-003
 ```
+
+My note: Based on some tests, tag should be different by each threads, otherwise the result is corrupted.
