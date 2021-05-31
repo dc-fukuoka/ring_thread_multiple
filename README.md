@@ -1,16 +1,17 @@
 A simple MPI ring with MPI_THREAD_MULTIPLE.  
 
-ex, # of tasks = 2, # of threads = 2:  
+ex, # of tasks = 2, # of threads = 2, array size = 4:  
   
 ```
 MPI task # : 0       1  
 thread #   : 0   1   0   1
-array index: 1 2 3 4 5 6 7 8
+array index: 1 2 3 4 1 2 3 4
 ```
   
 task 0 thread 0 sends sendarray(1:2) to recvarray(1:2),  
 task 0 thread 1 sends sendarray(3:4) to recvarray(3:4),  
-...    
+task 1 thread 0 sends sendarray(1:2) to recvarray(1:2),  
+task 1 thread 1 sends sendarray(3:4) to recvarray(3:4).  
   
 This is just a test of MPI communication with MPI_THREAD_MULTIPLE, probably not so much effective.
 
