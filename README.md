@@ -10,4 +10,6 @@ array index: 1 2 3 4 5 6 7 8
   
 task 0 thread 0 send sendarray(1:2) to recvarray(1:2),  
 task 0 thread 1 send sendarray(3:4) to recvarray(3:4),  
-...  
+...    
+  
+This is just a test of MPI communication with MPI_THREAD_MULTIPLE, probably not so much effective.
