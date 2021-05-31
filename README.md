@@ -13,3 +13,9 @@ task 0 thread 1 send sendarray(3:4) to recvarray(3:4),
 ...    
   
 This is just a test of MPI communication with MPI_THREAD_MULTIPLE, probably not so much effective.
+
+```
+$ mpirun -H localhost:16,r7i4n3:16 -npernode 4 -np 8 -x OMP_NUM_THREADS=4 -x PATH -x LD_LIBRARY_PATH -x PSM2_CUDA=0 ./a.out $((1024*1024))
+ size:     1048576
+ time[s]:   1.7100239929277450E-003
+```

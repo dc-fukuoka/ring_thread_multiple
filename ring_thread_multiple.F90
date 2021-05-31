@@ -18,7 +18,7 @@ program main
 
   ireq = mpi_thread_multiple
   call mpi_init_thread(ireq,iprov,ierr)
-  if (ireq < iprov) then
+  if (iprov .ne. ireq) then
      write(6, *) "MPI_THREAD_MULTIPLE is not supported."
      call mpi_finalize(ierr)
   end if
@@ -63,7 +63,9 @@ program main
   mysize = size/nth/np
   istart = 1 + iam_g*mysize
   iend = mysize*(iam_g + 1)
-  write(6,'(5(a,i4))') "iam_g: ", iam_g, " iam_th: ",iam_th," istart: ",istart," iend: ",iend
+#ifdef _DEBUG
+  write(6,'(6(a,i4))') "iam_g: ", iam_g, " iam: ", iam, " iam_th: ",iam_th," istart: ",istart," iend: ",iend, " mysize: ", mysize
+#endif
 #else
   mysize = size/np
   istart = 1 + iam*mysize
@@ -82,6 +84,12 @@ program main
   !$omp end parallel
   call mpi_barrier(mpi_comm_world, ierr)
   time = mpi_wtime() - t0
+
+#ifdef _DEBUG
+  do i = 1, size
+     write(100+iam, '(a,i2,a,i4,a,1pe14.5)') "iam: ", iam, " rbuf(", i, "): ", rbuf(i)
+  end do
+#endif
   
   if (iam == 0) write(6, *) "time[s]:", time
   
