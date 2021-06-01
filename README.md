@@ -11,7 +11,7 @@ array index: 1 2 3 4 1 2 3 4
 task 0 thread 0 sends sendarray(1:2) to task 1 thread 0 recvarray(1:2),  
 task 0 thread 1 sends sendarray(3:4) to task 1 thread 1 recvarray(3:4),  
 task 1 thread 0 sends sendarray(1:2) to task 0 thread 0 recvarray(1:2),  
-task 1 thread 1 sends sendarray(3:4) to task 1 thread 1 recvarray(3:4).  
+task 1 thread 1 sends sendarray(3:4) to task 0 thread 1 recvarray(3:4).  
   
 This is just a test of MPI communication with MPI_THREAD_MULTIPLE, probably not so much effective.
 
