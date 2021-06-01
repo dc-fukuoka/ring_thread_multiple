@@ -5,7 +5,7 @@ program main
   implicit none
   include "mpif.h"  
   integer :: iam, np, ierr
-!$  integer :: iam_th, nth
+  integer :: iam_th, nth
   !  type(mpi_status) :: stat
   integer :: istart,iend,mysize,iam_g
   integer :: stat(mpi_status_size)
@@ -63,10 +63,11 @@ program main
   write(6,'(6(a,i4))') "iam_g: ", iam_g, " iam: ", iam, " iam_th: ",iam_th," istart: ",istart," iend: ",iend," mysize: ",mysize
 #endif
 #else
-  mysize = size/np
-  istart = 1 + iam*mysize
-  iend   = mysize*(iam + 1)
-!  write(6,*) "iam:",iam,"istart:",istart,"iend:",iend
+  iam_th = 0
+  nth    = 1
+  mysize = size
+  istart = 1
+  iend   = mysize
 #endif
   if (iam .eq. 0) then
      ! tag argument should be thread number!
