@@ -22,6 +22,6 @@ $ mpirun -H localhost:16,r7i4n3:16 -npernode 4 -np 8 -x OMP_NUM_THREADS=4 -x PAT
  time[s]:   1.7100239929277450E-003
 ```
 
-My note: Based on some tests, tag number should be the thread number, otherwise the result is corrupted.  
+My note: tag number should be the thread number, otherwise the result is corrupted.(because if all tags are 0, sendarray(1:2) which is sent by task 0 thread 0 can be received by task 1 thread 1, this should be recieved by task 1 thread0.)  
 for debugging purpose(with -D_DEBUG), fort.1xx(xx is rank # of sender) should be equal to fort.2yy(yy is rank # of reciever).  
 ex: np = 4 case, fort.100 must equal to fort.201, fort.101 must equal to fort.202,... fort103 must equal to fort.200.
